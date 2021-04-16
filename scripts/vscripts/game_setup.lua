@@ -60,6 +60,7 @@ function GameSetup:init()
   GameMode:SetRespawnTimeScale(RESPAWN_SCALE)
   GameMode:SetModifyGoldFilter( Dynamic_Wrap( wwoods, "FilterGold" ), self )
   GameMode:SetModifyExperienceFilter( Dynamic_Wrap( wwoods, "FilterXP" ), self )
+  GameMode:SetBountyRunePickupFilter( Dynamic_Wrap( wwoods, "FilterBounty" ), self )
 
   -- why don't these 2 work?
   GameMode:SetBountyRuneSpawnInterval(240)
@@ -115,5 +116,15 @@ function wwoods:FilterXP(filterTable)
 
   filterTable["experience"] = xp * XP_MULTIPLIER
   print(playerID.." recieved "..filterTable["experience"].." xp")
+  return true
+end
+
+function wwoods:FilterBounty(filterTable)
+  local playerID = filterTable["player_id_const"]
+  local xp = filterTable["xp_bounty"]
+  local gold = filterTable["gold_bounty"]
+
+  filterTable["gold_bounty"] = gold * GOLD_MULTIPLIER
+  print("Bounty rune picked up for"..filterTable["gold_bounty"].." gold (Originially:) "..gold)
   return true
 end

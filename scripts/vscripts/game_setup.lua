@@ -1,6 +1,7 @@
 -- CONSTANTS
-GOLD_MULTIPLIER = 10
-XP_MULTIPLIER = 10
+GOLD_MULTIPLIER = 2
+XP_MULTIPLIER = 2
+RESPAWN_SCALE = .5
 
 if GameSetup == nil then
     GameSetup = class({})
@@ -54,13 +55,15 @@ function GameSetup:init()
   end
   local GameMode = GameRules:GetGameModeEntity()
   GameRules:GetGameModeEntity():SetFreeCourierModeEnabled(true)
+  GameRules:SetFilterMoreGold(true)
+  GameMode:SetDraftingBanningTimeOverride(1)
+  GameMode:SetRespawnTimeScale(RESPAWN_SCALE)
+  GameMode:SetModifyGoldFilter( Dynamic_Wrap( wwoods, "FilterGold" ), self )
+  GameMode:SetModifyExperienceFilter( Dynamic_Wrap( wwoods, "FilterXP" ), self )
 
   -- why don't these 2 work?
   GameMode:SetBountyRuneSpawnInterval(240)
   GameMode:SetPowerRuneSpawnInterval(240)
-
-  GameMode:SetModifyGoldFilter( Dynamic_Wrap( wwoods, "FilterGold" ), self )
-  GameMode:SetModifyExperienceFilter( Dynamic_Wrap( wwoods, "FilterXP" ), self )
 end
 
 function GameSetup:OnStateChange()
@@ -96,8 +99,11 @@ function wwoods:FilterGold(filterTable)
   local reason = filterTable["reason_const"]
   local reliable = filterTable["reliable"] == 1
 
+  if reason < 11 then
+    return true
+  end
   filterTable["gold"] = gold * GOLD_MULTIPLIER
-  print(playerID.." recieved "..filterTable["gold"].." gold")
+  print("gold modified to "..filterTable["gold"].." from"..gold)
   return true
 end
 

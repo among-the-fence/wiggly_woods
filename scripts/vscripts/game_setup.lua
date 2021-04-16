@@ -99,7 +99,7 @@ function wwoods:FilterGold(filterTable)
   local reason = filterTable["reason_const"]
   local reliable = filterTable["reliable"] == 1
 
-  if reason < 11 then
+  if reason < 10 then
     return true
   end
   filterTable["gold"] = gold * GOLD_MULTIPLIER

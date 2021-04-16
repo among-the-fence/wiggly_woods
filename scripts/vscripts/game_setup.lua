@@ -49,6 +49,8 @@ if GameSetup == nil then
     end
     local GameMode = GameRules:GetGameModeEntity()
     GameRules:GetGameModeEntity():SetFreeCourierModeEnabled(true)
+
+    -- why don't these 2 work?
     GameMode:SetBountyRuneSpawnInterval(240)
     GameMode:SetPowerRuneSpawnInterval(240)
   end

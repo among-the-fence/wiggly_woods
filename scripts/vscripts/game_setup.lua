@@ -22,6 +22,7 @@ function GameSetup:init()
     GameRules:SetPreGameTime(0)
     GameRules:SetShowcaseTime(0)
     GameRules:SetPostGameTime(5)
+    GameMode:SetDraftingBanningTimeOverride(1)
 
     --disable some setting which are annoying then testing
     local GameMode = GameRules:GetGameModeEntity()
@@ -51,20 +52,21 @@ function GameSetup:init()
   else --release build
 
     --put your rules here
+    GameMode:SetDraftingBanningTimeOverride(15)
 
   end
   local GameMode = GameRules:GetGameModeEntity()
   GameRules:GetGameModeEntity():SetFreeCourierModeEnabled(true)
   GameRules:SetFilterMoreGold(true)
-  GameMode:SetDraftingBanningTimeOverride(1)
+  
   GameMode:SetRespawnTimeScale(RESPAWN_SCALE)
   GameMode:SetModifyGoldFilter( Dynamic_Wrap( wwoods, "FilterGold" ), self )
   GameMode:SetModifyExperienceFilter( Dynamic_Wrap( wwoods, "FilterXP" ), self )
   GameMode:SetBountyRunePickupFilter( Dynamic_Wrap( wwoods, "FilterBounty" ), self )
 
+  GameMode:SetUseDefaultDOTARuneSpawnLogic(true)
   -- why don't these 2 work?
-  GameMode:SetBountyRuneSpawnInterval(240)
-  GameMode:SetPowerRuneSpawnInterval(240)
+  --GameMode:SetBountyRuneSpawnInterval(45)
 end
 
 function GameSetup:OnStateChange()

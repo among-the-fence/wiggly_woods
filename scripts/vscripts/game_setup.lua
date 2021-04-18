@@ -14,6 +14,7 @@ local forceHero = nil
 
 function GameSetup:init()
   if IsInToolsMode() then  --debug build
+    local GameMode = GameRules:GetGameModeEntity()
     --skip all the starting game mode stages e.g picking screen, showcase, etc
     GameRules:EnableCustomGameSetupAutoLaunch(true)
     GameRules:SetCustomGameSetupAutoLaunchDelay(0)
@@ -25,7 +26,7 @@ function GameSetup:init()
     GameMode:SetDraftingBanningTimeOverride(1)
 
     --disable some setting which are annoying then testing
-    local GameMode = GameRules:GetGameModeEntity()
+    
     GameMode:SetAnnouncerDisabled(true)
     GameMode:SetKillingSpreeAnnouncerDisabled(true)
     GameMode:SetDaynightCycleDisabled(true)
@@ -50,7 +51,7 @@ function GameSetup:init()
     ListenToGameEvent("game_rules_state_change", Dynamic_Wrap(self, "OnStateChange"), self)
 
   else --release build
-
+    local GameMode = GameRules:GetGameModeEntity()
     --put your rules here
     GameMode:SetDraftingBanningTimeOverride(15)
 
